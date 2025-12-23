@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Todo, Category } from '../types'
 import { Button } from './Button'
 import { Input } from './Input'
-import { spacing, borderRadius, colors } from '../styles'
+import { spacing, borderRadius, colors, gradients } from '../styles'
 
 interface AddTodoProps {
   addTodo: (todo: Todo) => void
@@ -56,8 +56,8 @@ export function AddTodo({ addTodo, categories, onAddCategory }: AddTodoProps) {
   const handleAddCategory = () => {
     if (!newCategoryName.trim()) return
     
-    const colors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899']
-    const randomColor = colors[Math.floor(Math.random() * colors.length)]
+    const categoryColors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316']
+    const randomColor = categoryColors[Math.floor(Math.random() * categoryColors.length)]
     
     const category: Category = {
       id: `cat_${Date.now()}`,
@@ -73,42 +73,67 @@ export function AddTodo({ addTodo, categories, onAddCategory }: AddTodoProps) {
 
   return (
     <div style={{ 
-      marginBottom: spacing.xl,
-      padding: spacing.lg,
+      marginBottom: spacing.xxl,
+      padding: spacing.xxl,
       background: colors.white,
-      borderRadius: borderRadius.lg,
-      boxShadow: `0 2px 8px ${colors.shadow}`,
-      border: `1px solid ${colors.border}`
+      borderRadius: borderRadius.xl,
+      boxShadow: `0 8px 24px ${colors.shadowMedium}`,
+      border: `2px solid ${colors.border}`,
+      position: 'relative',
+      overflow: 'hidden'
     }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.md }}>
+      {/* Decorative gradient */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 6,
+        background: gradients.primary,
+      }} />
+
+      <h2 style={{
+        margin: 0,
+        marginBottom: spacing.xl,
+        fontSize: 24,
+        fontWeight: 700,
+        background: gradients.primary,
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        backgroundClip: 'text',
+      }}>
+        ✍️ Create New Note
+      </h2>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.lg }}>
         <Input
           value={title}
           onChange={setTitle}
-          placeholder="Note title..."
-          style={{ fontSize: 16, fontWeight: 500 }}
+          placeholder="Enter note title..."
+          style={{ fontSize: 16, fontWeight: 600 }}
         />
 
-        <div style={{ display: 'flex', gap: spacing.sm }}>
+        <div style={{ display: 'flex', gap: spacing.md, flexWrap: 'wrap' }}>
           <Button 
             onClick={() => setType('text')} 
-            variant={type === 'text' ? 'primary' : 'default'}
-            style={{ padding: `${spacing.sm}px ${spacing.md}px` }}
+            variant={type === 'text' ? 'gradient' : 'default'}
+            style={{ flex: '1 1 auto' }}
           >
-             Text
+            📝 Text
           </Button>
           <Button 
             onClick={() => setType('image')} 
-            variant={type === 'image' ? 'primary' : 'default'}
-            style={{ padding: `${spacing.sm}px ${spacing.md}px` }}
+            variant={type === 'image' ? 'gradient' : 'default'}
+            style={{ flex: '1 1 auto' }}
           >
-             Image
+            🖼️ Image
           </Button>
           <Button 
             onClick={() => setType('location')} 
-            variant={type === 'location' ? 'primary' : 'default'}
-            style={{ padding: `${spacing.sm}px ${spacing.md}px` }}
+            variant={type === 'location' ? 'gradient' : 'default'}
+            style={{ flex: '1 1 auto' }}
           >
-             Location
+            📍 Location
           </Button>
         </div>
 
@@ -116,15 +141,26 @@ export function AddTodo({ addTodo, categories, onAddCategory }: AddTodoProps) {
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="Note content..."
-            rows={3}
+            placeholder="Write your note content here..."
+            rows={4}
             style={{
-              padding: spacing.md,
-              border: `1px solid ${colors.border}`,
-              borderRadius: borderRadius.sm,
-              fontSize: 14,
+              padding: `${spacing.lg}px`,
+              border: `2px solid ${colors.border}`,
+              borderRadius: borderRadius.md,
+              fontSize: 15,
               resize: 'vertical',
-              fontFamily: 'inherit'
+              fontFamily: 'inherit',
+              outline: 'none',
+              transition: 'all 0.3s ease',
+              lineHeight: 1.6
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = colors.primary
+              e.target.style.boxShadow = `0 0 0 4px ${colors.primary}15`
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = colors.border
+              e.target.style.boxShadow = 'none'
             }}
           />
         )}
@@ -133,58 +169,69 @@ export function AddTodo({ addTodo, categories, onAddCategory }: AddTodoProps) {
           <Input
             value={imageUrl}
             onChange={setImageUrl}
-            placeholder="Image URL..."
+            placeholder="Paste image URL here..."
           />
         )}
 
         {type === 'location' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.sm }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: spacing.md }}>
             <Input
               value={locationData.lat}
               onChange={(val) => setLocationData(prev => ({ ...prev, lat: val }))}
-              placeholder="Latitude (e.g., 40.7128)"
+              placeholder="Latitude"
               type="number"
             />
             <Input
               value={locationData.lng}
               onChange={(val) => setLocationData(prev => ({ ...prev, lng: val }))}
-              placeholder="Longitude (e.g., -74.0060)"
+              placeholder="Longitude"
               type="number"
             />
             <Input
               value={locationData.address}
               onChange={(val) => setLocationData(prev => ({ ...prev, address: val }))}
               placeholder="Address (optional)"
+              style={{ gridColumn: 'span 2' }}
             />
           </div>
         )}
 
-        <div style={{ display: 'flex', gap: spacing.sm, alignItems: 'center', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: spacing.md, alignItems: 'center', flexWrap: 'wrap' }}>
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
             style={{
-              padding: `${spacing.sm}px ${spacing.md}px`,
-              border: `1px solid ${colors.border}`,
-              borderRadius: borderRadius.sm,
+              padding: `${spacing.md}px ${spacing.lg}px`,
+              border: `2px solid ${colors.border}`,
+              borderRadius: borderRadius.md,
               fontSize: 14,
+              fontWeight: 600,
               background: colors.white,
               cursor: 'pointer',
-              minWidth: 150
+              minWidth: 180,
+              outline: 'none',
+              transition: 'all 0.3s ease',
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = colors.primary
+              e.target.style.boxShadow = `0 0 0 4px ${colors.primary}15`
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = colors.border
+              e.target.style.boxShadow = 'none'
             }}
           >
-            <option value="">Select Category</option>
+            <option value="">📁 No Category</option>
             {categories.map(cat => (
-              <option key={cat.id} value={cat.id}>{cat.name}</option>
+              <option key={cat.id} value={cat.id}>📁 {cat.name}</option>
             ))}
           </select>
 
           {!showCategoryInput && (
             <Button 
               onClick={() => setShowCategoryInput(true)}
-              style={{ padding: `${spacing.sm}px ${spacing.md}px` }}
             >
-               Add New Category
+              ➕ New Category
             </Button>
           )}
 
@@ -194,20 +241,20 @@ export function AddTodo({ addTodo, categories, onAddCategory }: AddTodoProps) {
                 value={newCategoryName}
                 onChange={setNewCategoryName}
                 placeholder="Category name..."
-                style={{ minWidth: 150 }}
+                style={{ minWidth: 180 }}
               />
-              <Button onClick={handleAddCategory} variant="primary">
-                Add
+              <Button onClick={handleAddCategory} variant="success">
+                ✓ Add
               </Button>
               <Button onClick={() => setShowCategoryInput(false)}>
-                Cancel
+                ✕ Cancel
               </Button>
             </>
           )}
         </div>
 
-        <Button onClick={handleSubmit} variant="primary" style={{ padding: `${spacing.md}px ${spacing.xl}px` }}>
-          Add Note
+        <Button onClick={handleSubmit} variant="gradient" style={{ padding: `${spacing.lg}px`, fontSize: 16 }}>
+           Create Note
         </Button>
       </div>
     </div>

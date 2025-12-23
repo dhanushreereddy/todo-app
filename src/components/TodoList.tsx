@@ -21,15 +21,21 @@ export function TodosList({
   if (todos.length === 0) {
     return (
       <div style={{ 
-        padding: spacing.xxl,
+        padding: spacing.xxl * 2,
         textAlign: 'center',
         color: colors.textMuted,
-        background: colors.background,
-        borderRadius: borderRadius.lg,
-        border: `2px dashed ${colors.border}`
+        background: `linear-gradient(135deg, ${colors.background} 0%, ${colors.backgroundDark} 100%)`,
+        borderRadius: borderRadius.xl,
+        border: `3px dashed ${colors.border}`,
+        marginTop: spacing.xl
       }}>
-        <div style={{ fontSize: 48, marginBottom: spacing.md }}>📝</div>
-        <p style={{ margin: 0, fontSize: 16 }}>No notes yet. Add one above to get started!</p>
+        <div style={{ fontSize: 64, marginBottom: spacing.lg }}>📝</div>
+        <h3 style={{ margin: 0, marginBottom: spacing.sm, fontSize: 20, fontWeight: 700, color: colors.text }}>
+          No notes yet
+        </h3>
+        <p style={{ margin: 0, fontSize: 16, color: colors.textMuted }}>
+          Create your first note above to get started!
+        </p>
       </div>
     )
   }
@@ -38,26 +44,41 @@ export function TodosList({
     <div>
       <h3 style={{ 
         color: colors.text, 
-        marginBottom: spacing.lg,
-        fontSize: 18,
-        fontWeight: 600,
+        marginBottom: spacing.xl,
+        fontSize: 24,
+        fontWeight: 700,
         display: 'flex',
         alignItems: 'center',
-        gap: spacing.sm
+        gap: spacing.md
       }}>
-         Active Notes
+        <span style={{
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+        }}>
+          ✨ Active Notes
+        </span>
         <span style={{ 
-          background: colors.primary,
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
           color: colors.white,
-          padding: `${spacing.xs}px ${spacing.md}px`,
-          borderRadius: borderRadius.sm,
-          fontSize: 14,
-          fontWeight: 500
+          padding: `${spacing.xs}px ${spacing.lg}px`,
+          borderRadius: borderRadius.md,
+          fontSize: 16,
+          fontWeight: 700,
+          boxShadow: `0 4px 12px ${colors.primary}30`
         }}>
           {todos.length}
         </span>
       </h3>
-      <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+      
+      {/* GRID LAYOUT */}
+      <div style={{ 
+        display: 'grid',
+        gridTemplateColumns: 'repeat(3, 1fr)',
+        gap: spacing.xl,
+        marginBottom: spacing.xl
+      }}>
         {todos.map((todo) => (
           <TodoItem
             key={todo.id}
@@ -68,7 +89,7 @@ export function TodosList({
             categories={categories}
           />
         ))}
-      </ul>
+      </div>
     </div>
   )
 }

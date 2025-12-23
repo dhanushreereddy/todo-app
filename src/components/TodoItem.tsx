@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Todo, Category } from '../types'
 import { Button } from './Button'
-import { colors, spacing, borderRadius } from '../styles'
+import { colors, spacing, borderRadius, gradients } from '../styles'
 
 interface TodoItemProps {
   todo: Todo
@@ -21,123 +21,210 @@ export function TodoItem({
   const [isHovered, setIsHovered] = useState(false)
   const category = categories.find(c => c.id === todo.category)
 
+  const getTypeIcon = () => {
+    switch(todo.type) {
+      case 'text': return '📝'
+      case 'image': return '🖼️'
+      case 'location': return '📍'
+    }
+  }
+
+  const getTypeGradient = () => {
+    switch(todo.type) {
+      case 'text': return gradients.info
+      case 'image': return gradients.purple
+      case 'location': return gradients.ocean
+      default: return gradients.info
+    }
+  }
+
   return (
-    <li 
+    <div 
       style={{ 
-        marginBottom: spacing.sm, 
-        padding: spacing.md, 
-        border: `1px solid ${colors.border}`,
-        borderRadius: borderRadius.md,
+        padding: spacing.xl,
+        border: `2px solid ${colors.border}`,
+        borderRadius: borderRadius.lg,
+        background: colors.white,
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        boxShadow: isHovered ? `0 12px 28px ${colors.shadowMedium}` : `0 4px 12px ${colors.shadow}`,
+        transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
+        position: 'relative',
+        overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        gap: spacing.sm,
-        background: isHovered ? colors.background : colors.white,
-        transition: 'all 0.2s',
-        boxShadow: isHovered ? `0 2px 8px ${colors.shadow}` : `0 1px 2px ${colors.shadow}`,
+        minHeight: 280,
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.sm }}>
+      {/* Top gradient bar */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 4,
+        background: getTypeGradient(),
+      }} />
+
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.md, marginBottom: spacing.md }}>
         <input
           type="checkbox"
           checked={todo.isCompleted}
           onChange={onToggle}
           style={{ 
-            width: 18, 
-            height: 18, 
+            width: 22, 
+            height: 22, 
             cursor: 'pointer',
             accentColor: colors.primary,
-            marginTop: 2
+            marginTop: 2,
+            flexShrink: 0
           }}
         />
-        <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: spacing.sm, marginBottom: spacing.xs }}>
-            <span style={{ 
+        
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: spacing.sm, marginBottom: spacing.xs, flexWrap: 'wrap' }}>
+            <h3 style={{ 
+              margin: 0,
               textDecoration: todo.isCompleted ? 'line-through' : 'none',
               color: todo.isCompleted ? colors.textMuted : colors.text,
-              fontSize: 15,
-              fontWeight: 500,
+              fontSize: 18,
+              fontWeight: 700,
+              wordBreak: 'break-word',
             }}>
               {todo.title}
+            </h3>
+          </div>
+          
+          <div style={{ display: 'flex', gap: spacing.sm, flexWrap: 'wrap', marginTop: spacing.sm }}>
+            <span style={{
+              padding: `${spacing.xs}px ${spacing.md}px`,
+              background: getTypeGradient(),
+              color: colors.white,
+              borderRadius: borderRadius.sm,
+              fontSize: 12,
+              fontWeight: 700,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: spacing.xs,
+            }}>
+              {getTypeIcon()} {todo.type.toUpperCase()}
             </span>
+            
             {category && (
               <span style={{
-                padding: `${spacing.xs}px ${spacing.sm}px`,
+                padding: `${spacing.xs}px ${spacing.md}px`,
                 background: category.color,
                 color: colors.white,
                 borderRadius: borderRadius.sm,
-                fontSize: 11,
-                fontWeight: 600,
+                fontSize: 12,
+                fontWeight: 700,
               }}>
                 {category.name}
               </span>
             )}
-            <span style={{
-              padding: `${spacing.xs}px ${spacing.sm}px`,
-              background: colors.background,
-              color: colors.textMuted,
-              borderRadius: borderRadius.sm,
-              fontSize: 11,
-              fontWeight: 500,
-            }}>
-              {todo.type === 'text' && 'Text'}
-              {todo.type === 'image' && 'Image'}
-              {todo.type === 'location' && 'Location'}
-            </span>
           </div>
-          
-          {todo.type === 'text' && (
-            <p style={{ margin: 0, color: colors.textMuted, fontSize: 14 }}>
-              {todo.content}
-            </p>
-          )}
-          
-          {todo.type === 'image' && todo.imageUrl && (
+        </div>
+      </div>
+
+      {/* Content */}
+      <div style={{ flex: 1, marginBottom: spacing.lg }}>
+        {todo.type === 'text' && todo.content && (
+          <p style={{ 
+            margin: 0,
+            color: colors.textMuted, 
+            fontSize: 15,
+            lineHeight: 1.6,
+            whiteSpace: 'pre-wrap',
+            wordBreak: 'break-word',
+          }}>
+            {todo.content}
+          </p>
+        )}
+        
+        {todo.type === 'image' && todo.imageUrl && (
+          <div style={{ marginTop: spacing.sm }}>
             <img 
               src={todo.imageUrl} 
               alt={todo.title}
               style={{ 
-                maxWidth: '100%', 
-                maxHeight: 200, 
-                borderRadius: borderRadius.sm,
-                marginTop: spacing.xs
+                width: '100%',
+                height: 200,
+                objectFit: 'cover',
+                borderRadius: borderRadius.md,
+                border: `2px solid ${colors.border}`
+              }}
+              onError={(e) => {
+                e.currentTarget.style.display = 'none'
+                const errorDiv = document.createElement('div')
+                errorDiv.style.cssText = `padding: ${spacing.lg}px; background: ${colors.backgroundDark}; color: ${colors.danger}; border-radius: ${borderRadius.md}px; font-size: 14px; font-weight: 600; text-align: center;`
+                errorDiv.textContent = '❌ Failed to load image'
+                e.currentTarget.parentElement?.appendChild(errorDiv)
               }}
             />
-          )}
-          
-          {todo.type === 'location' && todo.location && (
-            <div style={{ 
-              padding: spacing.sm,
-              background: colors.background,
-              borderRadius: borderRadius.sm,
-              marginTop: spacing.xs
-            }}>
-              <div style={{ fontSize: 13, color: colors.textMuted }}>
-                 {todo.location.address || `${todo.location.lat}, ${todo.location.lng}`}
-              </div>
+          </div>
+        )}
+        
+        {todo.type === 'location' && todo.location && (
+          <div style={{ 
+            padding: spacing.lg,
+            background: `linear-gradient(135deg, ${colors.background} 0%, ${colors.backgroundDark} 100%)`,
+            borderRadius: borderRadius.md,
+            marginTop: spacing.sm,
+            border: `2px solid ${colors.border}`
+          }}>
+            <div style={{ fontSize: 14, color: colors.text, fontWeight: 700, marginBottom: spacing.sm, display: 'flex', alignItems: 'center', gap: spacing.sm }}>
+              <span style={{ fontSize: 20 }}>📍</span>
+              Location Details
             </div>
-          )}
-        </div>
+            <div style={{ fontSize: 14, color: colors.textMuted, lineHeight: 1.6 }}>
+              {todo.location.address ? (
+                <>
+                  <div style={{ fontWeight: 600, color: colors.text }}>{todo.location.address}</div>
+                  <div style={{ fontSize: 12, marginTop: spacing.xs, color: colors.textLight }}>
+                    {todo.location.lat.toFixed(6)}, {todo.location.lng.toFixed(6)}
+                  </div>
+                </>
+              ) : (
+                <div style={{ fontWeight: 600 }}>
+                  {todo.location.lat.toFixed(6)}, {todo.location.lng.toFixed(6)}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
       
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      {/* Footer */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        paddingTop: spacing.md,
+        borderTop: `2px solid ${colors.border}`,
+        gap: spacing.md,
+        flexWrap: 'wrap'
+      }}>
         <small style={{ 
           color: colors.textLight,
           fontSize: 12,
+          fontWeight: 600,
+          display: 'flex',
+          alignItems: 'center',
+          gap: spacing.xs
         }}>
-          {new Date(todo.createdAt).toLocaleDateString()} {new Date(todo.createdAt).toLocaleTimeString()}
+          🕐 {new Date(todo.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
         </small>
-        <div style={{ display: 'flex', gap: spacing.xs }}>
-          <Button onClick={onArchive} style={{ padding: `${spacing.xs}px ${spacing.md}px`, fontSize: 13 }}>
-            Archive
+        <div style={{ display: 'flex', gap: spacing.sm }}>
+          <Button onClick={onArchive} style={{ padding: `${spacing.sm}px ${spacing.md}px`, fontSize: 12 }}>
+            archive
           </Button>
-          <Button onClick={onDelete} variant="danger" style={{ padding: `${spacing.xs}px ${spacing.md}px`, fontSize: 13 }}>
-            Delete
+          <Button onClick={onDelete} variant="danger" style={{ padding: `${spacing.sm}px ${spacing.md}px`, fontSize: 12 }}>
+            delete
           </Button>
         </div>
       </div>
-    </li>
+    </div>
   )
 }
-

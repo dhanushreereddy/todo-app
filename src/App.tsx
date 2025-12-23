@@ -31,7 +31,7 @@ export default function App() {
     paginatedItems: paginatedActive,
     goToPage: goToActivePage,
     totalItems: activeTotalItems
-  } = usePagination(visibleTodos, 10)
+  } = usePagination(visibleTodos, 5)
   
   const {
     currentPage: archivedPage,
@@ -39,7 +39,7 @@ export default function App() {
     paginatedItems: paginatedArchived,
     goToPage: goToArchivedPage,
     totalItems: archivedTotalItems
-  } = usePagination(visibleArchived, 10)
+  } = usePagination(visibleArchived, 5)
 
   const addTodo = (todo: Todo) => {
     setTodos(prev => [...prev, todo])
@@ -65,6 +65,7 @@ export default function App() {
     setCategories(prev => [...prev, category])
   }
 
+  //  Partial - Make all properties in FilterState optional
   const handleFilterChange = (newFilters: Partial<FilterState>) => {
     setFilters(prev => ({ ...prev, ...newFilters }))
   }
@@ -92,7 +93,7 @@ export default function App() {
       }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: 48, marginBottom: spacing.md }}>⏳</div>
-          <p style={{ color: colors.textMuted, fontSize: 16 }}>Loading your notes...</p>
+          <p style={{ color: colors.textMuted, fontSize: 16 }}> Loading your notes...</p>
         </div>
       </div>
     )
