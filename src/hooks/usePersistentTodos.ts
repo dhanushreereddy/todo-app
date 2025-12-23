@@ -7,15 +7,13 @@ export function usePersistentData() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const loadData = async () => {
+    const loadData = () => {
       try {
-        const [todosResult, categoriesResult] = await Promise.all([
-          window.storage.get('todos'),
-          window.storage.get('categories')
-        ])
-        
-        if (todosResult?.value) {
-          const parsed = JSON.parse(todosResult.value)
+        const todosRaw = localStorage.getItem('todos')
+        const categoriesRaw = localStorage.getItem('categories')
+
+        if (todosRaw) {
+          const parsed = JSON.parse(todosRaw)
           if (Array.isArray(parsed)) {
             setTodos(parsed.map((t: any) => ({
               id: t.id ?? t.createdAt ?? Date.now(),
@@ -31,9 +29,9 @@ export function usePersistentData() {
             })))
           }
         }
-        
-        if (categoriesResult?.value) {
-          const parsed = JSON.parse(categoriesResult.value)
+
+        if (categoriesRaw) {
+          const parsed = JSON.parse(categoriesRaw)
           if (Array.isArray(parsed)) {
             setCategories(parsed)
           }
@@ -50,12 +48,10 @@ export function usePersistentData() {
   useEffect(() => {
     if (loading) return
     
-    const saveData = async () => {
+    const saveData = () => {
       try {
-        await Promise.all([
-          window.storage.set('todos', JSON.stringify(todos)),
-          window.storage.set('categories', JSON.stringify(categories))
-        ])
+        localStorage.setItem('todos', JSON.stringify(todos))
+        localStorage.setItem('categories', JSON.stringify(categories))
       } catch (error) {
         console.error('Failed to save data', error)
       }

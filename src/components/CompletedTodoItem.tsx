@@ -3,17 +3,19 @@ import { Todo, Category } from '../types'
 import { Button } from './Button'
 import { colors, spacing, borderRadius } from '../styles'
 
-interface ArchivedTodoItemProps {
+interface CompletedTodoItemProps {
   todo: Todo
-  onUnarchive: () => void
+  onUncomplete: () => void
+  onDelete?: () => void
   categories: Category[]
 }
 
-export function ArchivedTodoItem({ 
+export function CompletedTodoItem({ 
   todo, 
-  onUnarchive,
+  onUncomplete,
+  onDelete,
   categories
-}: ArchivedTodoItemProps) {
+}: CompletedTodoItemProps) {
   const [isHovered, setIsHovered] = useState(false)
   const category = categories.find(c => c.id === todo.category)
 
@@ -27,7 +29,7 @@ export function ArchivedTodoItem({
         display: 'flex',
         alignItems: 'center',
         gap: spacing.sm,
-        opacity: isHovered ? 1 : 0.92,
+        opacity: isHovered ? 1 : 0.95,
         background: colors.white,
         boxShadow: isHovered ? `0 6px 14px ${colors.shadowMedium}` : `0 1px 4px ${colors.shadow}`,
         transition: 'all 0.18s ease',
@@ -38,7 +40,7 @@ export function ArchivedTodoItem({
       <div style={{ flex: 1 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: spacing.sm }}>
           <span style={{ 
-            textDecoration: todo.isCompleted ? 'line-through' : 'none',
+            textDecoration: 'line-through',
             color: colors.textMuted,
             fontSize: 14,
             lineHeight: 1.2
@@ -53,7 +55,7 @@ export function ArchivedTodoItem({
               borderRadius: borderRadius.sm,
               fontSize: 11,
               fontWeight: 600,
-              opacity: 0.7
+              opacity: 0.8
             }}>
               {category.name}
             </span>
@@ -68,9 +70,16 @@ export function ArchivedTodoItem({
       }}>
         {new Date(todo.createdAt).toLocaleDateString()}
       </small>
-      <Button onClick={onUnarchive} style={{ padding: `${spacing.xs}px ${spacing.md}px`, fontSize: 13 }}>
-        ↩️ Restore
-      </Button>
+      <div style={{ display: 'flex', gap: spacing.sm }}>
+        <Button onClick={onUncomplete} style={{ padding: `${spacing.xs}px ${spacing.md}px`, fontSize: 13 }}>
+          ↩️ Mark active
+        </Button>
+        {onDelete && (
+          <Button onClick={onDelete} variant="danger" style={{ padding: `${spacing.xs}px ${spacing.md}px`, fontSize: 13 }}>
+            delete
+          </Button>
+        )}
+      </div>
     </li>
   )
 }

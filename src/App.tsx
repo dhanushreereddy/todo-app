@@ -4,6 +4,7 @@ import { AddTodo } from './components/AddTodo'
 import { FilterControls } from './components/FilteredControl'
 import { TodosList } from './components/TodoList'
 import { ArchiveList } from './components/ArchiveList'
+import { CompletedList } from './components/CompletedList'
 import { Pagination } from './components/Pagination'
 import { usePersistentData } from './hooks/usePersistentTodos'
 import { useFilteredTodos } from './hooks/useFilteredTodos'
@@ -22,7 +23,8 @@ export default function App() {
   })
 
   const filteredTodos = useFilteredTodos(todos, filters)
-  const visibleTodos = filteredTodos.filter(t => !t.isArchive)
+  const visibleActive = filteredTodos.filter(t => !t.isArchive && !t.isCompleted)
+  const visibleCompleted = filteredTodos.filter(t => !t.isArchive && t.isCompleted)
   const visibleArchived = filteredTodos.filter(t => t.isArchive)
   
   const {
@@ -31,15 +33,23 @@ export default function App() {
     paginatedItems: paginatedActive,
     goToPage: goToActivePage,
     totalItems: activeTotalItems
-  } = usePagination(visibleTodos, 5)
+  } = usePagination(visibleActive, 6)
   
+  const {
+    currentPage: completedPage,
+    totalPages: completedTotalPages,
+    paginatedItems: paginatedCompleted,
+    goToPage: goToCompletedPage,
+    totalItems: completedTotalItems
+  } = usePagination(visibleCompleted, 6)
+
   const {
     currentPage: archivedPage,
     totalPages: archivedTotalPages,
     paginatedItems: paginatedArchived,
     goToPage: goToArchivedPage,
     totalItems: archivedTotalItems
-  } = usePagination(visibleArchived, 5)
+  } = usePagination(visibleArchived, 6)
 
   const addTodo = (todo: Todo) => {
     setTodos(prev => [...prev, todo])
@@ -93,7 +103,7 @@ export default function App() {
       }}>
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: 48, marginBottom: spacing.md }}>⏳</div>
-          <p style={{ color: colors.textMuted, fontSize: 16 }}> Loading your notes...</p>
+          <p style={{ color: colors.textMuted, fontSize: 16 }}> Loading your todos...</p>
         </div>
       </div>
     )
@@ -117,7 +127,7 @@ export default function App() {
             margin: 0,
             marginBottom: spacing.sm
           }}>
-             Notes App
+             Todo App
           </h1>
           <p style={{ 
             color: colors.textMuted,
@@ -146,9 +156,26 @@ export default function App() {
           currentPage={activePage}
           totalPages={activeTotalPages}
           onPageChange={goToActivePage}
-          itemsPerPage={10}
+          itemsPerPage={6}
           totalItems={activeTotalItems}
         />
+
+        <CompletedList
+          completedTodos={paginatedCompleted}
+          onUncomplete={toggleTodo}
+          onDelete={removeTodo}
+          categories={categories}
+        />
+        {completedTotalPages > 1 && (
+          <Pagination
+            currentPage={completedPage}
+            totalPages={completedTotalPages}
+            onPageChange={goToCompletedPage}
+            itemsPerPage={6}
+            totalItems={completedTotalItems}
+          />
+        )}
+
         <ArchiveList 
           archivedTodos={paginatedArchived} 
           unarchiveTodo={toggleArchive}
@@ -159,7 +186,7 @@ export default function App() {
             currentPage={archivedPage}
             totalPages={archivedTotalPages}
             onPageChange={goToArchivedPage}
-            itemsPerPage={10}
+            itemsPerPage={6}
             totalItems={archivedTotalItems}
           />
         )}

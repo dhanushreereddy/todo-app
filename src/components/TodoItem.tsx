@@ -41,19 +41,19 @@ export function TodoItem({
   return (
     <div 
       style={{ 
-        padding: spacing.xl,
-        border: `2px solid ${colors.border}`,
+        padding: spacing.lg,
+        border: `1px solid ${colors.border}`,
         borderRadius: borderRadius.lg,
         background: colors.white,
-        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-        boxShadow: isHovered ? `0 12px 28px ${colors.shadowMedium}` : `0 4px 12px ${colors.shadow}`,
-        transform: isHovered ? 'translateY(-4px)' : 'translateY(0)',
+        transition: 'all 0.24s ease',
+        boxShadow: isHovered ? `0 8px 18px ${colors.shadowMedium}` : `0 2px 6px ${colors.shadow}`,
+        transform: isHovered ? 'translateY(-2px)' : 'translateY(0)',
         position: 'relative',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        minHeight: 280,
-      }}
+        minHeight: 240,
+      }} 
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -68,14 +68,14 @@ export function TodoItem({
       }} />
 
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.md, marginBottom: spacing.md }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: spacing.md, marginBottom: spacing.sm }}>
         <input
           type="checkbox"
           checked={todo.isCompleted}
           onChange={onToggle}
           style={{ 
-            width: 22, 
-            height: 22, 
+            width: 20, 
+            height: 20, 
             cursor: 'pointer',
             accentColor: colors.primary,
             marginTop: 2,
@@ -89,7 +89,7 @@ export function TodoItem({
               margin: 0,
               textDecoration: todo.isCompleted ? 'line-through' : 'none',
               color: todo.isCompleted ? colors.textMuted : colors.text,
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: 700,
               wordBreak: 'break-word',
             }}>
@@ -150,11 +150,11 @@ export function TodoItem({
               alt={todo.title}
               style={{ 
                 width: '100%',
-                height: 200,
+                height: 160,
                 objectFit: 'cover',
                 borderRadius: borderRadius.md,
-                border: `2px solid ${colors.border}`
-              }}
+                border: `1px solid ${colors.border}`
+              }} 
               onError={(e) => {
                 e.currentTarget.style.display = 'none'
                 const errorDiv = document.createElement('div')
@@ -168,11 +168,11 @@ export function TodoItem({
         
         {todo.type === 'location' && todo.location && (
           <div style={{ 
-            padding: spacing.lg,
+            padding: spacing.md,
             background: `linear-gradient(135deg, ${colors.background} 0%, ${colors.backgroundDark} 100%)`,
             borderRadius: borderRadius.md,
             marginTop: spacing.sm,
-            border: `2px solid ${colors.border}`
+            border: `1px solid ${colors.border}`
           }}>
             <div style={{ fontSize: 14, color: colors.text, fontWeight: 700, marginBottom: spacing.sm, display: 'flex', alignItems: 'center', gap: spacing.sm }}>
               <span style={{ fontSize: 20 }}>📍</span>
@@ -201,8 +201,8 @@ export function TodoItem({
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center',
-        paddingTop: spacing.md,
-        borderTop: `2px solid ${colors.border}`,
+        paddingTop: spacing.sm,
+        borderTop: `1px solid ${colors.border}`,
         gap: spacing.md,
         flexWrap: 'wrap'
       }}>
@@ -217,10 +217,10 @@ export function TodoItem({
           🕐 {new Date(todo.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
         </small>
         <div style={{ display: 'flex', gap: spacing.sm }}>
-          <Button onClick={onArchive} style={{ padding: `${spacing.sm}px ${spacing.md}px`, fontSize: 12 }}>
+          <Button onClick={onArchive} style={{ padding: `${spacing.xs}px ${spacing.md}px`, fontSize: 12 }}>
             archive
           </Button>
-          <Button onClick={onDelete} variant="danger" style={{ padding: `${spacing.sm}px ${spacing.md}px`, fontSize: 12 }}>
+          <Button onClick={onDelete} variant="danger" style={{ padding: `${spacing.xs}px ${spacing.md}px`, fontSize: 12 }}>
             delete
           </Button>
         </div>

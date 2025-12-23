@@ -1,20 +1,22 @@
 import React from 'react'
 import { Todo, Category } from '../types'
-import { ArchivedTodoItem } from './ArchivedTodoItem'
+import { CompletedTodoItem } from './CompletedTodoItem'
 import { spacing, colors, borderRadius } from '../styles'
 
-interface ArchiveListProps {
-  archivedTodos: Todo[]
-  unarchiveTodo: (id: string | number) => void
+interface CompletedListProps {
+  completedTodos: Todo[]
+  onUncomplete: (id: string | number) => void
+  onDelete: (id: string | number) => void
   categories: Category[]
 }
 
-export function ArchiveList({ 
-  archivedTodos, 
-  unarchiveTodo,
+export function CompletedList({ 
+  completedTodos, 
+  onUncomplete,
+  onDelete,
   categories
-}: ArchiveListProps) {
-  if (archivedTodos.length === 0) return null
+}: CompletedListProps) {
+  if (completedTodos.length === 0) return null
 
   return (
     <div style={{ 
@@ -31,7 +33,7 @@ export function ArchiveList({
         alignItems: 'center',
         gap: spacing.sm
       }}>
-         Archived
+         Completed
         <span style={{ 
           background: colors.textMuted,
           color: colors.white,
@@ -40,15 +42,16 @@ export function ArchiveList({
           fontSize: 14,
           fontWeight: 500
         }}>
-          {archivedTodos.length}
+          {completedTodos.length}
         </span>
       </h3>
       <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-        {archivedTodos.map((todo) => (
-          <ArchivedTodoItem
+        {completedTodos.map((todo) => (
+          <CompletedTodoItem
             key={todo.id}
             todo={todo}
-            onUnarchive={() => unarchiveTodo(todo.id)}
+            onUncomplete={() => onUncomplete(todo.id)}
+            onDelete={() => onDelete(todo.id)}
             categories={categories}
           />
         ))}

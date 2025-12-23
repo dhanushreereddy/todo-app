@@ -18,13 +18,20 @@ export function Pagination({
 }: PaginationProps) {
   if (totalPages <= 1) return null
 
-  const startItem = (currentPage - 1) * itemsPerPage + 1
-  const endItem = Math.min(currentPage * itemsPerPage, totalItems)
+  const startItem = totalItems === 0 ? 0 : Math.min((currentPage - 1) * itemsPerPage + 1, totalItems)
+  const endItem = totalItems === 0 ? 0 : Math.min(currentPage * itemsPerPage, totalItems)
+  const itemLabel = totalItems === 1 ? 'todo' : 'todos'
+
+  const rangeText = totalItems === 0
+    ? 'No todos'
+    : startItem === endItem
+      ? `Showing ${startItem} of ${totalItems} ${itemLabel}`
+      : `Showing ${startItem}–${endItem} of ${totalItems} ${itemLabel}`
 
   const getPageNumbers = () => {
     const pages: (number | string)[] = []
     
-    if (totalPages <= 5) {
+    if (totalPages <= 6) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i)
       }
@@ -66,7 +73,7 @@ export function Pagination({
       gap: spacing.md
     }}>
       <div style={{ color: colors.textMuted, fontSize: 14 }}>
-        Showing {startItem}-{endItem} of {totalItems} notes
+        {rangeText}
       </div>
       
       <div style={{ display: 'flex', gap: spacing.xs, alignItems: 'center' }}>

@@ -31,10 +31,10 @@ export function TodosList({
       }}>
         <div style={{ fontSize: 64, marginBottom: spacing.lg }}>📝</div>
         <h3 style={{ margin: 0, marginBottom: spacing.sm, fontSize: 20, fontWeight: 700, color: colors.text }}>
-          No notes yet
+          No todos yet
         </h3>
         <p style={{ margin: 0, fontSize: 16, color: colors.textMuted }}>
-          Create your first note above to get started!
+          Create your first todo above to get started!
         </p>
       </div>
     )
@@ -57,7 +57,7 @@ export function TodosList({
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text',
         }}>
-          ✨ Active Notes
+          ✨ Active Todos
         </span>
         <span style={{ 
           background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',

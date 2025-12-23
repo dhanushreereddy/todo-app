@@ -102,14 +102,14 @@ export function AddTodo({ addTodo, categories, onAddCategory }: AddTodoProps) {
         WebkitTextFillColor: 'transparent',
         backgroundClip: 'text',
       }}>
-        ✍️ Create New Note
+         Create New Todo
       </h2>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.lg }}>
         <Input
           value={title}
           onChange={setTitle}
-          placeholder="Enter note title..."
+          placeholder="Enter todo title..."
           style={{ fontSize: 16, fontWeight: 600 }}
         />
 
@@ -141,7 +141,7 @@ export function AddTodo({ addTodo, categories, onAddCategory }: AddTodoProps) {
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="Write your note content here..."
+            placeholder="Write your todo content here..."
             rows={4}
             style={{
               padding: `${spacing.lg}px`,
@@ -221,9 +221,9 @@ export function AddTodo({ addTodo, categories, onAddCategory }: AddTodoProps) {
               e.target.style.boxShadow = 'none'
             }}
           >
-            <option value="">📁 No Category</option>
+            <option value=""> No Category</option>
             {categories.map(cat => (
-              <option key={cat.id} value={cat.id}>📁 {cat.name}</option>
+              <option key={cat.id} value={cat.id}> {cat.name}</option>
             ))}
           </select>
 
@@ -231,7 +231,7 @@ export function AddTodo({ addTodo, categories, onAddCategory }: AddTodoProps) {
             <Button 
               onClick={() => setShowCategoryInput(true)}
             >
-              ➕ New Category
+               New Category
             </Button>
           )}
 
@@ -254,7 +254,7 @@ export function AddTodo({ addTodo, categories, onAddCategory }: AddTodoProps) {
         </div>
 
         <Button onClick={handleSubmit} variant="gradient" style={{ padding: `${spacing.lg}px`, fontSize: 16 }}>
-           Create Note
+           Create Todo
         </Button>
       </div>
     </div>
