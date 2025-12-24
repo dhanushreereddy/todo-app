@@ -44,3 +44,47 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+---
+
+## Storybook 🎨
+
+Stories live alongside components under `src/components/*.stories.tsx` and the Storybook config is in `.storybook/`.
+
+Install Storybook dev dependencies:
+
+```bash
+npm install -D @storybook/react @storybook/addon-essentials @storybook/addon-interactions
+```
+
+Run Storybook locally:
+
+```bash
+npm run storybook
+```
+
+Build a static Storybook:
+
+```bash
+npm run build-storybook
+```
+
+This will help you preview and iterate on UI components in isolation.
+
+---
+
+## MUI
+
+This project now uses Material UI for styling. Install the added packages (if you haven’t already):
+
+```bash
+npm install
+```
+
+If installing fails due to peer dependency conflicts with React 19, try:
+
+```bash
+npm install --legacy-peer-deps
+```
+
+You can then start Storybook or the app as usual.

@@ -46,15 +46,17 @@ export function ArchivedTodoItem({
             {todo.title}
           </span>
           {category && (
-            <span style={{
-              padding: `${spacing.xs}px ${spacing.sm}px`,
-              background: category.color,
-              color: colors.white,
-              borderRadius: borderRadius.sm,
-              fontSize: 11,
-              fontWeight: 600,
-              opacity: 0.7
-            }}>
+            <span 
+              style={{
+                padding: `${spacing.xs}px ${spacing.sm}px`,
+                background: category.color,
+                color: colors.white,
+                borderRadius: borderRadius.sm,
+                fontSize: 11,
+                fontWeight: 600,
+                opacity: 0.7
+              }}
+            >
               {category.name}
             </span>
           )}

@@ -85,42 +85,48 @@ export function TodoItem({
         
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: spacing.sm, marginBottom: spacing.xs, flexWrap: 'wrap' }}>
-            <h3 style={{ 
-              margin: 0,
-              textDecoration: todo.isCompleted ? 'line-through' : 'none',
-              color: todo.isCompleted ? colors.textMuted : colors.text,
-              fontSize: 16,
-              fontWeight: 700,
-              wordBreak: 'break-word',
-            }}>
+            <h3 
+              style={{ 
+                margin: 0,
+                textDecoration: todo.isCompleted ? 'line-through' : 'none',
+                color: todo.isCompleted ? colors.textMuted : colors.text,
+                fontSize: 16,
+                fontWeight: 700,
+                wordBreak: 'break-word',
+              }
+            }>
               {todo.title}
             </h3>
           </div>
           
           <div style={{ display: 'flex', gap: spacing.sm, flexWrap: 'wrap', marginTop: spacing.sm }}>
-            <span style={{
-              padding: `${spacing.xs}px ${spacing.md}px`,
-              background: getTypeGradient(),
-              color: colors.white,
-              borderRadius: borderRadius.sm,
-              fontSize: 12,
-              fontWeight: 700,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: spacing.xs,
-            }}>
-              {getTypeIcon()} {todo.type.toUpperCase()}
-            </span>
-            
-            {category && (
-              <span style={{
+            <span 
+              style={{
                 padding: `${spacing.xs}px ${spacing.md}px`,
-                background: category.color,
+                background: getTypeGradient(),
                 color: colors.white,
                 borderRadius: borderRadius.sm,
                 fontSize: 12,
                 fontWeight: 700,
-              }}>
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: spacing.xs,
+              }
+            }>
+              {getTypeIcon()} {todo.type.toUpperCase()}
+            </span>
+            
+            {category && (
+              <span 
+                style={{
+                  padding: `${spacing.xs}px ${spacing.md}px`,
+                  background: category.color,
+                  color: colors.white,
+                  borderRadius: borderRadius.sm,
+                  fontSize: 12,
+                  fontWeight: 700,
+                }}
+              >
                 {category.name}
               </span>
             )}
@@ -131,14 +137,16 @@ export function TodoItem({
       {/* Content */}
       <div style={{ flex: 1, marginBottom: spacing.lg }}>
         {todo.type === 'text' && todo.content && (
-          <p style={{ 
-            margin: 0,
-            color: colors.textMuted, 
-            fontSize: 15,
-            lineHeight: 1.6,
-            whiteSpace: 'pre-wrap',
-            wordBreak: 'break-word',
-          }}>
+          <p 
+            style={{ 
+              margin: 0,
+              color: colors.textMuted, 
+              fontSize: 15,
+              lineHeight: 1.6,
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'break-word',
+            }}
+          >
             {todo.content}
           </p>
         )}
@@ -167,13 +175,15 @@ export function TodoItem({
         )}
         
         {todo.type === 'location' && todo.location && (
-          <div style={{ 
-            padding: spacing.md,
-            background: `linear-gradient(135deg, ${colors.background} 0%, ${colors.backgroundDark} 100%)`,
-            borderRadius: borderRadius.md,
-            marginTop: spacing.sm,
-            border: `1px solid ${colors.border}`
-          }}>
+          <div 
+            style={{ 
+              padding: spacing.md,
+              background: `linear-gradient(135deg, ${colors.background} 0%, ${colors.backgroundDark} 100%)`,
+              borderRadius: borderRadius.md,
+              marginTop: spacing.sm,
+              border: `1px solid ${colors.border}`
+            }}
+          >
             <div style={{ fontSize: 14, color: colors.text, fontWeight: 700, marginBottom: spacing.sm, display: 'flex', alignItems: 'center', gap: spacing.sm }}>
               <span style={{ fontSize: 20 }}>📍</span>
               Location Details
@@ -197,23 +207,27 @@ export function TodoItem({
       </div>
       
       {/* Footer */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        paddingTop: spacing.sm,
-        borderTop: `1px solid ${colors.border}`,
-        gap: spacing.md,
-        flexWrap: 'wrap'
-      }}>
-        <small style={{ 
-          color: colors.textLight,
-          fontSize: 12,
-          fontWeight: 600,
-          display: 'flex',
+      <div 
+        style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
           alignItems: 'center',
-          gap: spacing.xs
-        }}>
+          paddingTop: spacing.sm,
+          borderTop: `1px solid ${colors.border}`,
+          gap: spacing.md,
+          flexWrap: 'wrap'
+        }}
+      >
+        <small 
+          style={{ 
+            color: colors.textLight,
+            fontSize: 12,
+            fontWeight: 600,
+            display: 'flex',
+            alignItems: 'center',
+            gap: spacing.xs
+          }}
+        >
           🕐 {new Date(todo.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
         </small>
         <div style={{ display: 'flex', gap: spacing.sm }}>

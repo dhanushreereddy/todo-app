@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Todo, Category } from '../types'
+import { Todo, Category, TodoType } from '../types'
 import { Button } from './Button'
 import { Input } from './Input'
 import { spacing, borderRadius, colors, gradients } from '../styles'
@@ -13,7 +13,7 @@ interface AddTodoProps {
 export function AddTodo({ addTodo, categories, onAddCategory }: AddTodoProps) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [type, setType] = useState<'text' | 'image' | 'location'>('text')
+  const [type, setType] = useState<TodoType>('text')
   const [selectedCategory, setSelectedCategory] = useState<string>('')
   const [showCategoryInput, setShowCategoryInput] = useState(false)
   const [newCategoryName, setNewCategoryName] = useState('')
@@ -72,16 +72,18 @@ export function AddTodo({ addTodo, categories, onAddCategory }: AddTodoProps) {
   }
 
   return (
-    <div style={{ 
-      marginBottom: spacing.xxl,
-      padding: spacing.xxl,
-      background: colors.white,
-      borderRadius: borderRadius.xl,
-      boxShadow: `0 8px 24px ${colors.shadowMedium}`,
-      border: `2px solid ${colors.border}`,
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
+    <div 
+      style={{ 
+        marginBottom: spacing.xxl,
+        padding: spacing.xxl,
+        background: colors.white,
+        borderRadius: borderRadius.xl,
+        boxShadow: `0 8px 24px ${colors.shadowMedium}`,
+        border: `2px solid ${colors.border}`,
+        position: 'relative',
+        overflow: 'hidden'
+      }
+    }>
       {/* Decorative gradient */}
       <div style={{
         position: 'absolute',
@@ -92,16 +94,18 @@ export function AddTodo({ addTodo, categories, onAddCategory }: AddTodoProps) {
         background: gradients.primary,
       }} />
 
-      <h2 style={{
-        margin: 0,
-        marginBottom: spacing.xl,
-        fontSize: 24,
-        fontWeight: 700,
-        background: gradients.primary,
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        backgroundClip: 'text',
-      }}>
+      <h2 
+        style={{
+          margin: 0,
+          marginBottom: spacing.xl,
+          fontSize: 24,
+          fontWeight: 700,
+          background: gradients.primary,
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+        }
+      }>
          Create New Todo
       </h2>
 

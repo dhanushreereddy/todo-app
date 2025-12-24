@@ -60,18 +60,20 @@ export function Pagination({
   }
 
   return (
-    <div style={{ 
-      marginTop: spacing.xl,
-      padding: spacing.lg,
-      background: colors.white,
-      borderRadius: borderRadius.lg,
-      border: `1px solid ${colors.border}`,
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      flexWrap: 'wrap',
-      gap: spacing.md
-    }}>
+    <div 
+      style={{ 
+        marginTop: spacing.xl,
+        padding: spacing.lg,
+        background: colors.white,
+        borderRadius: borderRadius.lg,
+        border: `1px solid ${colors.border}`,
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        gap: spacing.md
+      }}
+    >
       <div style={{ color: colors.textMuted, fontSize: 14 }}>
         {rangeText}
       </div>
@@ -120,5 +122,5 @@ export function Pagination({
         </Button>
       </div>
     </div>
-  )
+  )  
 }

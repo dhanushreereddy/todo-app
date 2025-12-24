@@ -42,32 +42,38 @@ export function TodosList({
 
   return (
     <div>
-      <h3 style={{ 
-        color: colors.text, 
-        marginBottom: spacing.xl,
-        fontSize: 24,
-        fontWeight: 700,
-        display: 'flex',
-        alignItems: 'center',
-        gap: spacing.md
-      }}>
-        <span style={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-        }}>
+      <h3 
+        style={{ 
+          color: colors.text, 
+          marginBottom: spacing.xl,
+          fontSize: 24,
+          fontWeight: 700,
+          display: 'flex',
+          alignItems: 'center',
+          gap: spacing.md
+        }
+      }>
+        <span 
+          style={{
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }
+        }>
           ✨ Active Todos
         </span>
-        <span style={{ 
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: colors.white,
-          padding: `${spacing.xs}px ${spacing.lg}px`,
-          borderRadius: borderRadius.md,
-          fontSize: 16,
-          fontWeight: 700,
-          boxShadow: `0 4px 12px ${colors.primary}30`
-        }}>
+        <span 
+          style={{ 
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: colors.white,
+            padding: `${spacing.xs}px ${spacing.lg}px`,
+            borderRadius: borderRadius.md,
+            fontSize: 16,
+            fontWeight: 700,
+            boxShadow: `0 4px 12px ${colors.primary}30`
+          }
+        }>
           {todos.length}
         </span>
       </h3>

@@ -1,3 +1,5 @@
+export type TodoType = 'text' | 'image' | 'location'
+
 export interface Todo {
   id: string | number
   createdAt: number
@@ -5,7 +7,7 @@ export interface Todo {
   isCompleted: boolean
   isArchive: boolean
   category?: string
-  type: 'text' | 'image' | 'location'
+  type: TodoType
   content: string
   imageUrl?: string
   location?: {
@@ -21,22 +23,11 @@ export interface FilterState {
   toDate: string
   sortOrder: 'asc' | 'desc'
   category: string
-  type: 'all' | 'text' | 'image' | 'location'
+  type: 'all' | TodoType
 }
 
 export interface Category {
   id: string
   name: string
   color: string
-}
-
-declare global {
-  interface Window {
-    storage: {
-      get: (key: string, shared?: boolean) => Promise<{ key: string; value: string; shared: boolean } | null>
-      set: (key: string, value: string, shared?: boolean) => Promise<{ key: string; value: string; shared: boolean } | null>
-      delete: (key: string, shared?: boolean) => Promise<{ key: string; deleted: boolean; shared: boolean } | null>
-      list: (prefix?: string, shared?: boolean) => Promise<{ keys: string[]; prefix?: string; shared: boolean } | null>
-    }
-  }
 }

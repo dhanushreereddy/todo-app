@@ -72,7 +72,7 @@ export function CompletedTodoItem({
       </small>
       <div style={{ display: 'flex', gap: spacing.sm }}>
         <Button onClick={onUncomplete} style={{ padding: `${spacing.xs}px ${spacing.md}px`, fontSize: 13 }}>
-          ↩️ Mark active
+           Mark active
         </Button>
         {onDelete && (
           <Button onClick={onDelete} variant="danger" style={{ padding: `${spacing.xs}px ${spacing.md}px`, fontSize: 13 }}>
