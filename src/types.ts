@@ -31,3 +31,10 @@ export interface Category {
   name: string
   color: string
 }
+
+export interface ExternalTodo {
+  userId: number
+  id: number
+  title: string
+  completed: boolean
+}

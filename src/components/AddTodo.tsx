@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Todo, Category, TodoType } from '../types'
+import { useExternalTodos, useDeleteExternalTodo } from '../hooks/useExternalTodos'
+import { Todo, Category, TodoType, ExternalTodo } from '../types' 
 import { Button } from './Button'
 import { Input } from './Input'
 import { spacing, borderRadius, colors, gradients } from '../styles'
@@ -19,6 +20,15 @@ export function AddTodo({ addTodo, categories, onAddCategory }: AddTodoProps) {
   const [newCategoryName, setNewCategoryName] = useState('')
   const [imageUrl, setImageUrl] = useState('')
   const [locationData, setLocationData] = useState({ lat: '', lng: '', address: '' })
+  
+  //external todo
+  const [selectedExternalId, setSelectedExternalId] = useState<number | ''>('')
+  
+  const { data: externalTodos, isLoading: isLoadingExternal, isError: isErrorExternal } = useExternalTodos()
+  const deleteExternalMutation = useDeleteExternalTodo()
+
+
+
 
   const handleSubmit = () => {
     if (!title.trim()) return
@@ -116,6 +126,65 @@ export function AddTodo({ addTodo, categories, onAddCategory }: AddTodoProps) {
           placeholder="Enter todo title..."
           style={{ fontSize: 16, fontWeight: 600 }}
         />
+
+        <select
+          value={selectedExternalId}
+          onChange={(e) => {
+            const val = e.target.value
+            setSelectedExternalId(val ? Number(val) : '')
+            if (val && externalTodos) {
+              const found = externalTodos.find((it: ExternalTodo) => it.id === Number(val))
+              if (found) {
+                setTitle(found.title)
+                setType('text')
+              }
+            }
+          }}
+          disabled={isLoadingExternal}
+          style={{
+            padding: `${spacing.md}px ${spacing.lg}px`,
+            border: `2px solid ${colors.border}`,
+            borderRadius: borderRadius.md,
+            fontSize: 14,
+            fontWeight: 600,
+            background: colors.white,
+            cursor: isLoadingExternal ? 'not-allowed' : 'pointer',
+            outline: 'none',
+            transition: 'all 0.3s ease',
+            minWidth: 240,
+          }}
+        >
+          <option value="">{isLoadingExternal ? 'Loading todos...' : 'Import from API (optional)'}</option>
+          {isErrorExternal && <option disabled>Failed to load</option>}
+          {externalTodos && externalTodos.map((ext: ExternalTodo) => (
+            <option key={ext.id} value={ext.id}>{ext.title}</option>
+          ))}
+        </select>
+
+        {/* External actions */}
+        {selectedExternalId && (
+          <div style={{ display: 'flex', gap: spacing.sm, marginTop: spacing.sm }}>
+            <Button
+              onClick={async () => {
+                const id = Number(selectedExternalId)
+                const found = externalTodos?.find(t => t.id === id)
+                if (!found) return
+                if (!confirm('Delete this external todo?')) return
+                try {
+                  await deleteExternalMutation.mutateAsync(id)
+                  setSelectedExternalId('')
+                  setTitle('')
+                } catch (err) {
+                  console.error('Failed to delete external todo', err)
+                }
+              }}
+              variant="danger"
+              style={{ padding: `${spacing.xs}px ${spacing.md}px`, fontSize: 12 }}
+            >
+              Delete external
+            </Button>
+          </div>
+        )}
 
         <div style={{ display: 'flex', gap: spacing.md, flexWrap: 'wrap' }}>
           <Button 
