@@ -1,12 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { ExternalTodo } from '../types'
-import { EXTERNAL_TODOS_URL } from '../config'
+// import { EXTERNAL_TODOS_URL } from '../config'
 
 export function useExternalTodos() {
   return useQuery<ExternalTodo[]>({
     queryKey: ['externalTodos'],
     queryFn: async () => {
-      const res = await fetch(EXTERNAL_TODOS_URL)
+      const res = await fetch("https://jsonplaceholder.typicode.com/todos?userId=1")
       if (!res.ok) throw new Error('Failed to fetch external todos')
       return await res.json() as ExternalTodo[]
     }
@@ -16,26 +16,39 @@ export function useExternalTodos() {
 
 // Optimistic delete for external todo (DELETE)
 export function useDeleteExternalTodo() {
-  const qc = useQueryClient()
+  const queryClient = useQueryClient()
 
-  return useMutation<void, Error, number, { previous?: ExternalTodo[] }>({
-    mutationFn: async (id) => {
+  return useMutation({
+    
+    mutationFn: async (id: number) => {
       const res = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
         method: 'DELETE'
       })
-      if (!res.ok) throw new Error('Failed to delete external todo')
+      if (!res.ok) throw new Error('Failed to delete')
     },
-    onMutate: async (id) => {
-      await qc.cancelQueries({ queryKey: ['externalTodos'] })
-      const previous = qc.getQueryData<ExternalTodo[]>(['externalTodos'])
-      qc.setQueryData<ExternalTodo[]>(['externalTodos'], (old) => old ? old.filter(t => t.id !== id) : old)
-      return { previous }
+
+    // update: Remove from UI immediately
+    onMutate: async (id: number) => {
+
+      // cancel ongoing refetches and save current state
+      await queryClient.cancelQueries({ queryKey: ['externalTodos'] })
+      const previousTodos = queryClient.getQueryData<ExternalTodo[]>(['externalTodos'])
+      
+      // update ui
+      queryClient.setQueryData<ExternalTodo[]>(['externalTodos'], (old) => 
+        old?.filter(todo => todo.id !== id)
+      )
+      return { previousTodos }
     },
-    onError: (_err, _variables, context) => {
-      if (context?.previous) qc.setQueryData(['externalTodos'], context.previous)
+
+    onError: (_error, _id, context) => {
+      if (context?.previousTodos) {
+        queryClient.setQueryData(['externalTodos'], context.previousTodos)
+      }
     },
+
     onSettled: () => {
-      qc.invalidateQueries({ queryKey: ['externalTodos'] })
+      queryClient.invalidateQueries({ queryKey: ['externalTodos'] })
     }
   })
 }

@@ -27,9 +27,6 @@ export function AddTodo({ addTodo, categories, onAddCategory }: AddTodoProps) {
   const { data: externalTodos, isLoading: isLoadingExternal, isError: isErrorExternal } = useExternalTodos()
   const deleteExternalMutation = useDeleteExternalTodo()
 
-
-
-
   const handleSubmit = () => {
     if (!title.trim()) return
     

@@ -34,5 +34,5 @@ type Story = StoryObj<typeof TodoItem>
 
 export const Default: Story = { args: { todo: sampleTodo, categories } }
 export const Completed: Story = { args: { todo: { ...sampleTodo, isCompleted: true, title: 'Completed task' }, categories } }
-export const ImageType: Story = { args: { todo: { ...sampleTodo, type: 'image' as any, imageUrl: 'https://via.placeholder.com/400x200', title: 'Image todo' }, categories } }
+export const ImageType: Story = { args: { todo: { ...sampleTodo, type: 'image' as any, imageUrl: 'https://www.shutterstock.com/image-photo/panoramic-view-picturesque-valley-morning-260nw-2465025519.jpg', title: 'Image todo' }, categories } }
 export const LocationType: Story = { args: { todo: { ...sampleTodo, type: 'location' as any, location: { lat: 37.7749, lng: -122.4194, address: 'San Francisco, CA' }, title: 'Location todo' }, categories } }

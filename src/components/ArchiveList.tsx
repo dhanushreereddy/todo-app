@@ -1,4 +1,3 @@
-import React from 'react'
 import { Todo, Category } from '../types'
 import { ArchivedTodoItem } from './ArchivedTodoItem'
 import { spacing, colors, borderRadius } from '../styles'
@@ -14,7 +13,7 @@ export function ArchiveList({
   unarchiveTodo,
   categories
 }: ArchiveListProps) {
-  if (archivedTodos.length === 0) return null
+  if (archivedTodos.length === 0) return <p>No Archived Todos</p>
 
   return (
     <div style={{ 

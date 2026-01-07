@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { FilterState, Todo, Category } from './types'
 import { AddTodo } from './components/AddTodo'
-import { FilterControls } from './components/FilteredControl'
+import { FilterControls } from './components/FilterControls'
 import { TodosList } from './components/TodoList'
 import { ArchiveList } from './components/ArchiveList'
 import { CompletedList } from './components/CompletedList'
